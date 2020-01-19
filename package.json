@@ -1,0 +1,27 @@
+{
+  "name": "surveymonkey-typescript-sdk",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkqubo/surveymonkey-typescript-sdk.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "SurveyMonkey"
+  ],
+  "author": "tkqubo",
+  "license": "MIT",
+  "dependencies": {
+    "@types/jest": "^24.0.25",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
+  }
+}
