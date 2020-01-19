@@ -6,7 +6,7 @@ export interface QuizOptions {
   score: number;
 }
 
-export interface TextChoice {
+export interface TextRow {
   id: string;
   text: string;
   position: number;
@@ -14,25 +14,40 @@ export interface TextChoice {
   quiz_options?: QuizOptions;
 }
 
+export interface TextChoice extends TextRow {
+  is_na: boolean;
+  description: string;
+}
+
 export interface TextChoiceOther {
+  id: string;
   text: string;
+  position: number;
+  visible: boolean;
+  is_answer_choice: boolean;
+  apply_all_rows: boolean;
+  error_text: string;
   num_chars: number;
   num_lines: number;
 }
 
 export interface TextChoiceAnswer {
-  choices: TextChoice[];
-  other?: TextChoiceOther[];
+  choices: TextRow[];
+  other?: TextChoiceOther;
 }
 
 export interface ImageUrl {
+  s3_key: string;
   url: string;
 }
 
 export interface ImageChoice {
+  id: string;
   image: ImageUrl;
-  text?: string;
-  position?: number;
+  text: string;
+  position: number;
+  visible: boolean;
+  quiz_options: QuizOptions;
 }
 
 export interface ImageChoiceAnswer {
@@ -40,31 +55,52 @@ export interface ImageChoiceAnswer {
 }
 
 export interface ChoiceMatrixAnswer {
-  rows: TextChoice[];
+  rows: TextRow[];
   choices: TextChoice[];
-  other?: TextChoiceOther[];
+  other?: TextChoiceOther;
+}
+
+export interface RatingChoice extends TextChoice {
+  weight: number;
+}
+
+export interface RatingChoiceOther extends TextChoiceOther {
+  position: number;
+  visible: boolean;
+  is_answer_choice: boolean;
+  apply_all_rows: boolean;
+  error_text: string;
+}
+
+export interface RatingMatrixAnswer {
+  rows: TextRow[];
+  choices: RatingChoice[];
+  other?: RatingChoiceOther;
 }
 
 export interface RankingMatrixAnswer {
-  rows: TextChoice[];
+  rows: TextRow[];
+  choices: RatingChoice[];
 }
 
 export interface MenuMatrixCol {
   text: string;
-  choices: TextChoice[];
+  choices: TextRow[];
 }
 
 export interface MenuMatrixAnswer {
-  rows: TextChoice[];
+  rows: TextRow[];
   cols: MenuMatrixCol[];
-  other?: TextChoiceOther[];
+  other?: TextChoiceOther;
 }
 
 export interface MultiOpenEndedAnswer {
-  rows: TextChoice[];
+  rows: TextRow[];
 }
 
 export interface DemographicAnswerRow {
+  id: string;
+  position: number;
   visible: boolean;
   required: boolean;
   type: string;
@@ -76,5 +112,5 @@ export interface DemographicAnswer {
 }
 
 export interface DateTimeAnswer {
-  rows: TextChoice[];
+  rows: TextRow[];
 }

@@ -28,7 +28,7 @@ import {
   MenuMatrixAnswer,
   RankingMatrixAnswer,
   ChoiceMatrixAnswer,
-  MultiOpenEndedAnswer, DateTimeAnswer
+  MultiOpenEndedAnswer, DateTimeAnswer, RatingMatrixAnswer
 } from "./answer";
 
 export interface HeadingImage {
@@ -90,28 +90,14 @@ export interface QuestionListItem {
   href: string;
 }
 
-export enum QuestionSortingType {
-  default = 'default',
-  textasc = 'textasc',
-  textdesc = 'textdesc',
-  resp_count_asc = 'resp_count_asc',
-  resp_count_desc = 'resp_count_desc',
-  random = 'random',
-  flip = 'flip'
-}
+export type QuestionSortingType = 'default' | 'textasc' | 'textdesc' | 'resp_count_asc' | 'resp_count_desc' | 'random' | 'flip';
 
 export interface QuestionSorting {
   type: QuestionSortingType;
   ignore_last: boolean;
 }
 
-export enum QuestionRequiredType {
-  all = 'all',
-  at_least = 'at_least',
-  at_most = 'at_most',
-  exactly = 'exactly',
-  range = 'range'
-}
+export type QuestionRequiredType = 'all' | 'at_least' | 'at_most' | 'exactly' | 'range';
 
 export interface QuestionRequired {
   text: string;
@@ -119,43 +105,16 @@ export interface QuestionRequired {
   amount: string;
 }
 
-export enum QuestionValidationType {
-  any = 'any',
-  integer = 'integer',
-  decimal = 'decimal',
-  date_us = 'date_us',
-  date_intl = 'date_intl',
-  regex = 'regex',
-  email = 'email',
-  text_length = 'text_length'
-}
+export type QuestionValidationType = 'any' | 'integer' | 'decimal' | 'date_us' | 'date_intl' | 'regex' | 'email' | 'text_length'
 
 export interface QuestionValidation {
   type: QuestionValidationType;
   text: string;
-  /** Date string, integer, or null depending on validation.type */
-  min?: any;
-  /** Date string, integer, or null depending on validation.type */
-  max?: any;
-  sum?: number;
-  sum_text?: string;
+  min: string | null;
+  max: string | null;
+  sum: number | null;
+  sum_text: string;
 }
-
-// export interface Question {
-//   headings: Heading[];
-//   position: number;
-//   visible: boolean;
-//   family: string;
-//   subtype: string;
-//   sorting?: QuestionSorting;
-//   required?: QuestionRequired;
-//   validation?: QuestionValidation;
-//   forced_ranking: boolean;
-//   id: string;
-//   href: string;
-//   answers: Answers;
-//   display_options?: DisplayOptions;
-// }
 
 export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | MatrixQuestion | OpenEndedQuestion | DemographicQuestion |
   DateTimeQuestion | PresentationQuestion;
@@ -164,12 +123,17 @@ export interface QuestionBase {
   headings: Heading[];
   position: number;
   visible: boolean;
-  sorting?: QuestionSorting;
-  required?: QuestionRequired;
-  validation?: QuestionValidation;
+  sorting: QuestionSorting | null;
+  required: QuestionRequired | null;
+  validation: QuestionValidation | null;
   forced_ranking: boolean;
   id: string;
   href: string;
+}
+
+export interface ChoiceQuizOptions {
+  feedback: MultipleChoiceQuizOptionsFeedback;
+  scoring_enabled: boolean;
 }
 
 export interface SingleChoiceDisplayOptions {
@@ -181,24 +145,32 @@ export interface SingleChoiceQuestion extends QuestionBase {
   subtype: 'vertical' | 'vertical_two_col' | 'vertical_three_col' | 'horiz' | 'menu';
   display_options?: SingleChoiceDisplayOptions;
   answers: ChoiceAnswer;
+  quiz_options?: ChoiceQuizOptions;
 }
 
 export type MatrixQuestion = RatingMatrixQuestion | RankingMatrixQuestion | MenuMatrixQuestion | ChoiceMatrixQuestion;
 
 export interface RatingMatrixDisplayOptionsCustomOptions {
   color?: string;
-  option_set: any[];
+  option_set: string[];
 }
 
-export interface RatingMatrixDisplayOptions {
+export interface DisplayOptionsBase {
+  display_type: string;
+  display_subtype: string;
+  custom_options?: any;
+  show_display_number: boolean;
+  right_label_id: string | null;
+  right_label: string;
+  left_label_id: string | null;
+  left_label: string;
+  middle_label_id: string | null;
+  middle_label: string;
+}
+
+export interface RatingMatrixDisplayOptions extends DisplayOptionsBase {
   display_type: 'emoji';
   display_subtype: 'star' | 'smiley' | 'heart' | 'thumb';
-  right_label_id?: string;
-  right_label?: string;
-  left_label_id?: string;
-  left_label?: string;
-  middle_label_id?: string;
-  middle_label?: string;
   custom_options?: RatingMatrixDisplayOptionsCustomOptions;
 }
 
@@ -206,7 +178,7 @@ export interface RatingMatrixQuestion extends QuestionBase {
   family: 'matrix';
   subtype: 'rating';
   display_options?: RatingMatrixDisplayOptions;
-  answers: ChoiceMatrixAnswer;
+  answers: RatingMatrixAnswer;
 }
 
 export interface RankingMatrixQuestion extends QuestionBase {
@@ -245,17 +217,13 @@ export type SingleOpenEndedDisplayOptions = SliderSingleOpenEndedDisplayOptions 
 export interface SliderSingleOpenEndedDisplayOptionsCustomOptions {
   starting_position?: number;
   step_size?: number;
+  option_set: string[]; // adjusted_scale, hide_numeric_input
 }
 
-export interface SliderSingleOpenEndedDisplayOptions {
+export interface SliderSingleOpenEndedDisplayOptions extends DisplayOptionsBase {
   display_type: 'slider';
-  right_label_id?: string;
-  right_label?: string;
-  left_label_id?: string;
-  left_label?: string;
-  middle_label_id?: string;
-  middle_label?: string;
-  custom_options?: SliderSingleOpenEndedDisplayOptionsCustomOptions[];
+  display_subtype: '';
+  custom_options: SliderSingleOpenEndedDisplayOptionsCustomOptions;
 }
 
 export interface FileUploadSingleOpenEndedDisplayOptions {
@@ -285,18 +253,33 @@ export interface DateTimeQuestion extends QuestionBase {
   answers: DateTimeAnswer;
 }
 
-export interface MultipleChoiceDisplayOptions {
+export interface MultipleChoiceDisplayOptions extends DisplayOptionsBase {
   display_type: 'image_choice';
+  display_subtype: '';
+  custom_options: {};
+}
+
+export interface MultipleChoiceQuizOptionsFeedback {
+  correct_text: string;
+  partial_text: string;
+  incorrect_text: string;
 }
 
 export interface MultipleChoiceQuestion extends QuestionBase {
   family: 'multiple_choice';
-  subtype: 'vertical';
+  subtype: 'vertical' | 'vertical_two_col' | 'vertical_three_col' | 'horiz';
   display_options?: MultipleChoiceDisplayOptions;
   answers: ChoiceAnswer;
+  quiz_options?: ChoiceQuizOptions;
+}
+
+export interface PresentationDisplayOptions {
+  show_display_number: boolean;
 }
 
 export interface PresentationQuestion extends QuestionBase {
   family: 'presentation';
   subtype: 'descriptive_text' | 'image';
+  nickname: string;
+  display_options: PresentationDisplayOptions;
 }

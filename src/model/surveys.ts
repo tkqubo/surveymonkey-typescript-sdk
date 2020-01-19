@@ -34,14 +34,25 @@ export interface SurveyListItem {
 
 export type Language = string;
 
+export interface SurveyQuizOptionsFeedback {
+  ranges_type: 'disabled';
+  ranges: [];
+}
+
+export interface SurveyQuizOptions {
+  is_quiz_mode: boolean;
+  show_results_type: 'results_and_answers';
+  feedback: SurveyQuizOptionsFeedback;
+}
+
 export interface Survey extends SurveyListItem {
   custom_variables: { [key: string]: any; };
   category: string;
   language: Language;
   question_count: number;
   page_count: number;
-  date_created: Date;
-  date_modified: Date;
+  date_created: string;
+  date_modified: string;
   buttons_text: ButtonsText;
   preview: string;
   folder_id: string;
@@ -52,6 +63,7 @@ export interface Survey extends SurveyListItem {
   response_count: number;
   footer: boolean;
   is_owner: boolean;
+  quiz_options?: SurveyQuizOptions;
 }
 
 export interface SurveyDetail extends Survey {
