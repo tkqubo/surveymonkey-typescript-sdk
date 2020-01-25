@@ -24,64 +24,16 @@
 
 import {
   ChoiceAnswer,
+  ChoiceMatrixAnswer,
+  DateTimeAnswer,
   DemographicAnswer,
   MenuMatrixAnswer,
+  MultiOpenEndedAnswer,
   RankingMatrixAnswer,
-  ChoiceMatrixAnswer,
-  MultiOpenEndedAnswer, DateTimeAnswer, RatingMatrixAnswer
+  RatingMatrixAnswer
 } from "./answer";
-
-export interface HeadingImage {
-  url: string;
-}
-
-export interface NormalHeading {
-  heading: string;
-  image?: HeadingImage;
-}
-
-export interface RansomAssignment {
-  percent: number;
-  position: number;
-  variable_name: string;
-  id: string;
-}
-
-export interface RandomAssignmentHeading {
-  heading: '';
-  description: string;
-  image?: HeadingImage;
-  random_assignment: RansomAssignment;
-}
-
-export type Heading = NormalHeading | RandomAssignmentHeading;
-
-export interface QuizOptions {
-  score: number;
-}
-
-export interface Choice {
-  position: number;
-  visible: boolean;
-  text: string;
-  quiz_options: QuizOptions;
-  id: string;
-  is_na?: boolean;
-  weight?: number;
-  description: string;
-}
-
-export interface Row {
-  position: number;
-  visible: boolean;
-  text: string;
-  id: string;
-}
-
-export interface Answers {
-  choices: Choice[];
-  rows: Row[];
-}
+import {Validation} from "./validation";
+import {Heading} from "./heading";
 
 export interface QuestionListItem {
   id: string;
@@ -105,17 +57,6 @@ export interface QuestionRequired {
   amount: string;
 }
 
-export type QuestionValidationType = 'any' | 'integer' | 'decimal' | 'date_us' | 'date_intl' | 'regex' | 'email' | 'text_length'
-
-export interface QuestionValidation {
-  type: QuestionValidationType;
-  text: string;
-  min: string | null;
-  max: string | null;
-  sum: number | null;
-  sum_text: string;
-}
-
 export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | MatrixQuestion | OpenEndedQuestion | DemographicQuestion |
   DateTimeQuestion | PresentationQuestion;
 
@@ -125,7 +66,7 @@ export interface QuestionBase {
   visible: boolean;
   sorting: QuestionSorting | null;
   required: QuestionRequired | null;
-  validation: QuestionValidation | null;
+  validation: Validation | null;
   forced_ranking: boolean;
   id: string;
   href: string;
@@ -158,7 +99,6 @@ export interface RatingMatrixDisplayOptionsCustomOptions {
 export interface DisplayOptionsBase {
   display_type: string;
   display_subtype: string;
-  custom_options?: any;
   show_display_number: boolean;
   right_label_id: string | null;
   right_label: string;

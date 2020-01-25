@@ -10,7 +10,7 @@ import {
   SurveyTemplate
 } from "../model/surveys";
 import {ApiBase, PaginatedResponse} from "./core";
-import {QuestionListItem} from "../model/question";
+import {QuestionListItem} from "../model/question/question";
 
 export type GetSurveyListResponse = PaginatedResponse<SurveyListItem>;
 
