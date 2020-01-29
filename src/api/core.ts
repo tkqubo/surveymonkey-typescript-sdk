@@ -25,6 +25,7 @@ export interface PaginatedResponse<T> {
   total: number;
   links: Links;
 }
+
 export abstract class ApiBase {
   protected abstract pathBase: string;
 
