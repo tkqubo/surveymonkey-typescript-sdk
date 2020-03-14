@@ -1,5 +1,23 @@
 # SurveyMonkey TypeScript SDK
 
+## Usage
+
+```ts
+const token = process.env[TOKEN_ENV_VAR_NAME]!;
+const config: SurveymonkeyConfig = {token};
+
+const surveyApi = new SurveyApi(config);
+
+async function main(): Promise<void> {
+  const {data} = await surveyApi.getSurveyList();
+  for (const survey of data) {
+    console.log(survey);
+  }
+}
+
+main().then(_ => process.exit(0));
+```
+
 ## Implemented endpoints
 
 ### [Surveys, Pages, and Questions](https://developer.surveymonkey.com/api/v3/#surveys-pages-and-questions)
