@@ -1,13 +1,12 @@
 'use strict';
 
-import {Headers} from "request";
-import request, {RequestPromiseOptions} from "request-promise-native";
+import {Headers} from 'request';
+import request, {RequestPromiseOptions} from 'request-promise-native';
 
 export const URL_BASE = 'https://api.surveymonkey.net/v3';
 
 export interface SurveymonkeyConfig {
   token: string;
-  urlBase: string;
 }
 
 export interface Links {
@@ -27,6 +26,7 @@ export interface PaginatedResponse<T> {
 }
 
 export abstract class ApiBase {
+  protected urlBase: string = URL_BASE;
   protected abstract pathBase: string;
 
   constructor(protected config: SurveymonkeyConfig) {
@@ -41,7 +41,7 @@ export abstract class ApiBase {
 
   protected requestUrl(...segments: string[]): string {
     const urlSegment = segments?.length > 0 ? `/${segments.join('/')}` : '';
-    return `${this.config.urlBase}${urlSegment}`;
+    return `${this.urlBase}${urlSegment}`;
   }
 
   protected requestOptions(additional: RequestPromiseOptions = {}): RequestPromiseOptions {

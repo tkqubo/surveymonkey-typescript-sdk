@@ -1,7 +1,6 @@
 'use strict';
 
-import {SurveyApi} from "../src/api/survey-api";
-import {SurveymonkeyConfig, URL_BASE} from "../src/api/core";
+import {SurveyApi, SurveymonkeyConfig} from '../src/api';
 
 require('dotenv').config();
 
@@ -12,7 +11,7 @@ if (!token) {
   throw Error(`Environmental variable ${TOKEN_ENV_VAR_NAME} is not set`);
 }
 
-const config: SurveymonkeyConfig = {token, urlBase: URL_BASE };
+const config: SurveymonkeyConfig = {token};
 
 const api: SurveyApi = new SurveyApi(config);
 
