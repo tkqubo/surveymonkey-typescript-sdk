@@ -2,15 +2,15 @@
 
 import {
   PageListItem,
+  QuestionListItem,
   Survey,
   SurveyCategory,
   SurveyDetail,
   SurveyLanguage,
   SurveyListItem,
   SurveyTemplate
-} from "../model/surveys";
-import {ApiBase, PaginatedResponse} from "./core";
-import {QuestionListItem} from "../model/question/question";
+} from '../model';
+import {ApiBase, PaginatedResponse} from './core';
 
 export type GetSurveyListResponse = PaginatedResponse<SurveyListItem>;
 
