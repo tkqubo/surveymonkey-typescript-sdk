@@ -1,6 +1,6 @@
 'use strict';
 
-import {Question} from "./question/question";
+import {Question} from './question';
 
 export interface ButtonsText {
   next_button: string;

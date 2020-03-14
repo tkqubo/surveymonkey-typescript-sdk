@@ -25,9 +25,11 @@ export interface PaginatedResponse<T> {
   links: Links;
 }
 
+export type SegmentType = string | number;
+
 export abstract class ApiBase {
   protected urlBase: string = URL_BASE;
-  protected abstract pathBase: string;
+  protected pathBase: string = '';
 
   constructor(protected config: SurveymonkeyConfig) {
   }
@@ -39,8 +41,9 @@ export abstract class ApiBase {
     };
   }
 
-  protected requestUrl(...segments: string[]): string {
-    const urlSegment = segments?.length > 0 ? `/${segments.join('/')}` : '';
+  protected requestUrl(...segments: SegmentType[]): string {
+    const compactSegment = segments?.filter(isEmpty)
+    const urlSegment = compactSegment?.length > 0 ? `/${compactSegment.join('/')}` : '';
     return `${this.urlBase}${urlSegment}`;
   }
 
@@ -48,14 +51,24 @@ export abstract class ApiBase {
     return {method: 'GET', headers: this.headers, ...additional};
   }
 
-  protected async doRequest<T>(...segments: string[]): Promise<T> {
+  protected async doRequest<T>(...segments: SegmentType[]): Promise<T> {
     return this.doRequestWithoutPathBase(this.pathBase, ...segments);
   }
 
-  protected async doRequestWithoutPathBase<T>(...segments: string[]): Promise<T> {
+  protected async doRequestWithoutPathBase<T>(...segments: SegmentType[]): Promise<T> {
     const url = this.requestUrl(...segments);
     // console.debug(`request: ${url}`);
     const response = await request(url, this.requestOptions()).promise();
     return JSON.parse(response);
   }
+}
+
+function isEmpty(type: SegmentType): boolean {
+  if (typeof type === 'string') {
+    return !!type.length;
+  } else {
+    return true;
+  }
+
+  return false;
 }
