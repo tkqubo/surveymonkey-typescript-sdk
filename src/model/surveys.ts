@@ -1,6 +1,7 @@
 'use strict';
 
 import {Question} from './question';
+import {Id} from "./core";
 
 export interface ButtonsText {
   next_button: string;
@@ -10,7 +11,7 @@ export interface ButtonsText {
 }
 
 export interface PageListItem {
-  id: string;
+  id: Id;
   title: string;
   description: string;
   position: number;
@@ -26,7 +27,7 @@ export interface PageDetail extends Page {
 }
 
 export interface SurveyListItem {
-  id: string;
+  id: Id;
   title: string;
   nickname: string;
   href: string;
@@ -55,7 +56,7 @@ export interface Survey extends SurveyListItem {
   date_modified: string;
   buttons_text: ButtonsText;
   preview: string;
-  folder_id: string;
+  folder_id: Id;
   edit_url: string;
   collect_url: string;
   analyze_url: string;
@@ -71,12 +72,12 @@ export interface SurveyDetail extends Survey {
 }
 
 export interface SurveyCategory {
-  id: string;
+  id: Id;
   name: string;
 }
 
 export interface SurveyTemplate {
-  id: string;
+  id: Id;
   name: string;
   title: string;
   description: string;
@@ -87,7 +88,7 @@ export interface SurveyTemplate {
 }
 
 export interface SurveyLanguage {
-  id: string;
+  id: Id;
   name: string;
   native_name: string;
 }

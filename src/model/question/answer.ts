@@ -1,5 +1,7 @@
 'use strict';
 
+import {Id} from "../core";
+
 export type ChoiceAnswer = TextChoiceAnswer | ImageChoiceAnswer;
 
 export interface QuizOptions {
@@ -7,7 +9,7 @@ export interface QuizOptions {
 }
 
 export interface TextRow {
-  id: string;
+  id: Id;
   text: string;
   position: number;
   visible: boolean;
@@ -20,7 +22,7 @@ export interface TextChoice extends TextRow {
 }
 
 export interface TextChoiceOther {
-  id: string;
+  id: Id;
   text: string;
   position: number;
   visible: boolean;
@@ -42,7 +44,7 @@ export interface ImageUrl {
 }
 
 export interface ImageChoice {
-  id: string;
+  id: Id;
   image: ImageUrl;
   text: string;
   position: number;
@@ -99,7 +101,7 @@ export interface MultiOpenEndedAnswer {
 }
 
 export interface DemographicAnswerRow {
-  id: string;
+  id: Id;
   position: number;
   visible: boolean;
   required: boolean;

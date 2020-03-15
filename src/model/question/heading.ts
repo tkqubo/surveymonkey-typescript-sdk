@@ -1,5 +1,7 @@
 'use strict';
 
+import {Id} from "../core";
+
 export interface HeadingImage {
   url: string;
 }
@@ -13,7 +15,7 @@ export interface RansomAssignment {
   percent: number;
   position: number;
   variable_name: string;
-  id: string;
+  id: Id;
 }
 
 export interface RandomAssignmentHeading {

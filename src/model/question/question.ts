@@ -34,9 +34,10 @@ import {
 } from "./answer";
 import {Validation} from "./validation";
 import {Heading} from "./heading";
+import {Id} from "../core";
 
 export interface QuestionListItem {
-  id: string;
+  id: Id;
   heading: string;
   position: number;
   href: string;
@@ -68,7 +69,7 @@ export interface QuestionBase {
   required: QuestionRequired | null;
   validation: Validation | null;
   forced_ranking: boolean;
-  id: string;
+  id: Id;
   href: string;
 }
 
@@ -100,11 +101,11 @@ export interface DisplayOptionsBase {
   display_type: string;
   display_subtype: string;
   show_display_number: boolean;
-  right_label_id: string | null;
+  right_label_id: Id | null;
   right_label: string;
-  left_label_id: string | null;
+  left_label_id: Id | null;
   left_label: string;
-  middle_label_id: string | null;
+  middle_label_id: Id | null;
   middle_label: string;
 }
 

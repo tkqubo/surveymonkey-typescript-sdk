@@ -3,14 +3,14 @@
 import {Id} from './core';
 
 export interface ResponseListItem {
-  id: string;
+  id: Id;
   href: string;
 }
 
 export interface Response extends ResponseListItem {
-  survey_id: string;
-  collector_id: string;
-  recipient_id: string;
+  survey_id: Id;
+  collector_id: Id;
+  recipient_id: Id;
   total_time: number;
   custom_value: string;
   first_name: string;
@@ -38,7 +38,7 @@ export type ResponseStatusType = 'completed' | 'partial' | 'overquota' | 'disqua
 export type CollectionModeType = 'default' | 'preview' | 'data_entry' | 'survey_preview' | 'edit';
 
 export interface ResponsePage {
-  id: string;
+  id: Id;
   questions: ResponseQuestion[];
 }
 

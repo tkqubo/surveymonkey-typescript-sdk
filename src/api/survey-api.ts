@@ -1,6 +1,7 @@
 'use strict';
 
 import {
+  Id,
   PageListItem,
   QuestionListItem,
   Survey,
@@ -41,7 +42,7 @@ export class SurveyApi extends ApiBase {
    * To get an expanded version showing all pages and questions use /surveys/{survey_id}/details. Requires View Surveys scope
    * @param id
    */
-  getSurvey(id: string): Promise<Survey> {
+  getSurvey(id: Id): Promise<Survey> {
     return this.doRequest(id);
   }
 
@@ -50,7 +51,7 @@ export class SurveyApi extends ApiBase {
    * each containing a list of questions objects. Public App users need access to the View Surveys scope
    * @param id
    */
-  getSurveyDetails(id: string): Promise<SurveyDetail> {
+  getSurveyDetails(id: Id): Promise<SurveyDetail> {
     return this.doRequest(id, 'details');
   }
 
