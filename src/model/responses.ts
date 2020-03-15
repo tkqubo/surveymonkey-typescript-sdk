@@ -45,10 +45,10 @@ export interface ResponsePage {
 export interface ResponseQuestion {
   id: Id;
   variable_id?: Id;
-  answers: Answer[];
+  answers: ResponseAnswer[];
 }
 
-export interface Answer {
+export interface ResponseAnswer {
   choice_id?: Id;
   row_id?: Id;
   col_id?: Id;
