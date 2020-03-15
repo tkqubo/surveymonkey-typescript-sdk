@@ -1,29 +1,13 @@
 'use strict';
 
-import {Question} from './question';
-import {Id} from "./core";
+import {Id} from '../core';
+import {SurveyPageDetail} from './page';
 
 export interface ButtonsText {
   next_button: string;
   prev_button: string;
   done_button: string;
   exit_button: string;
-}
-
-export interface PageListItem {
-  id: Id;
-  title: string;
-  description: string;
-  position: number;
-  href: string;
-}
-
-export interface Page extends PageListItem {
-  question_count: number;
-}
-
-export interface PageDetail extends Page {
-  questions: Question[];
 }
 
 export interface SurveyListItem {
@@ -68,7 +52,7 @@ export interface Survey extends SurveyListItem {
 }
 
 export interface SurveyDetail extends Survey {
-  pages: PageDetail[];
+  pages: SurveyPageDetail[];
 }
 
 export interface SurveyCategory {

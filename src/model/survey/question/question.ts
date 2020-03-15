@@ -34,7 +34,7 @@ import {
 } from './answer';
 import {Validation} from './validation';
 import {Heading} from './heading';
-import {Id} from '../core';
+import {Id} from '../../core';
 
 export interface QuestionListItem {
   id: Id;

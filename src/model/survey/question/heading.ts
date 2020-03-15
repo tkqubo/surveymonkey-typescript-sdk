@@ -1,6 +1,6 @@
 'use strict';
 
-import {Id} from "../core";
+import {Id} from '../../core';
 
 export interface HeadingImage {
   url: string;

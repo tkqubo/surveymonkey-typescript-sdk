@@ -2,7 +2,7 @@
 
 import {
   Id,
-  PageListItem,
+  SurveyPageListItem,
   QuestionListItem,
   Survey,
   SurveyCategory,
@@ -10,8 +10,8 @@ import {
   SurveyLanguage,
   SurveyListItem,
   SurveyTemplate
-} from '../model';
-import {ApiBase, PaginatedResponse} from './core';
+} from '../../model';
+import {ApiBase, PaginatedResponse} from '../core';
 
 export type GetSurveyListResponse = PaginatedResponse<SurveyListItem>;
 
@@ -21,9 +21,9 @@ export type GetSurveyTemplateListResponse = PaginatedResponse<SurveyTemplate>;
 
 export type GetSurveyLanguageListResponse = PaginatedResponse<SurveyLanguage>;
 
-export type GetPageListResponse = PaginatedResponse<PageListItem>;
+export type GetSurveyPageListResponse = PaginatedResponse<SurveyPageListItem>;
 
-export type GetQuestionListResponse = PaginatedResponse<QuestionListItem>;
+export type GetSuveyQuestionListResponse = PaginatedResponse<QuestionListItem>;
 
 export class SurveyApi extends ApiBase {
   protected pathBase = 'surveys';

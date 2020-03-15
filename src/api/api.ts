@@ -1,8 +1,7 @@
 'use strict';
 
-import {ApiBase, SurveymonkeyConfig} from "./core";
-import {SurveyApi} from "./survey-api";
-import {ResponseApi} from "./response-api";
+import {ApiBase, SurveymonkeyConfig} from './core';
+import {ResponseApi, SurveyApi} from './impl';
 
 export class SurveymonkeyApi extends ApiBase {
   readonly survey: SurveyApi;

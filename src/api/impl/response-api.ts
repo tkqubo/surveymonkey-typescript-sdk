@@ -1,7 +1,7 @@
 'use strict';
 
-import {ApiBase, PaginatedResponse} from './core';
-import {Id, Response, ResponseDetail, ResponseListItem} from '../model';
+import {ApiBase, PaginatedResponse} from '../core';
+import {Id, Response, ResponseDetail, ResponseListItem} from '../../model';
 
 export type GetResponseListResponse = PaginatedResponse<ResponseListItem>;
 
