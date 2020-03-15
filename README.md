@@ -6,10 +6,10 @@
 const token = process.env[TOKEN_ENV_VAR_NAME]!;
 const config: SurveymonkeyConfig = {token};
 
-const surveyApi = new SurveyApi(config);
+const api = new SurveymonkeyApi(config);
 
 async function main(): Promise<void> {
-  const {data} = await surveyApi.getSurveyList();
+  const {data} = await api.survey.getSurveyList();
   for (const survey of data) {
     console.log(survey);
   }
@@ -18,7 +18,9 @@ async function main(): Promise<void> {
 main().then(_ => process.exit(0));
 ```
 
-## Implemented endpoints
+## Endpoints coverage
+
+- Overall coverage: `10/56 (17%)`
 
 ### [Surveys, Pages, and Questions](https://developer.surveymonkey.com/api/v3/#surveys-pages-and-questions)
 

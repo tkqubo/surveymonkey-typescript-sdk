@@ -31,8 +31,7 @@ export abstract class ApiBase {
   protected urlBase: string = URL_BASE;
   protected pathBase: string = '';
 
-  constructor(protected config: SurveymonkeyConfig) {
-  }
+  constructor(protected config: SurveymonkeyConfig) {}
 
   protected get headers(): Headers {
     return {
@@ -69,6 +68,4 @@ function isEmpty(type: SegmentType): boolean {
   } else {
     return true;
   }
-
-  return false;
 }

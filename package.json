@@ -11,7 +11,9 @@
     "package.json",
     "package-lock.json"
   ],
-  "scripts": {},
+  "scripts": {
+    "coverage:all": "(todo=$(cat README.md| grep '\\[ \\]' | wc -l); done=$(cat README.md| grep '\\[x\\]' | wc -l); echo \"$done/$((todo + done)) ($((done * 100 / (todo + done)))%)\")"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tkqubo/surveymonkey-typescript-sdk.git"
