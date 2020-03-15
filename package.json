@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rm -rf lib/*",
     "compile": "tsc",
-    "prepublish": "npm install && npm run clean && npm run compile",
+    "prepare": "npm install && npm run clean && npm run compile",
     "coverage:all": "(todo=$(cat README.md| grep '\\[ \\]' | wc -l); done=$(cat README.md| grep '\\[x\\]' | wc -l); echo \"$done/$((todo + done)) ($((done * 100 / (todo + done)))%)\")"
   },
   "repository": {
