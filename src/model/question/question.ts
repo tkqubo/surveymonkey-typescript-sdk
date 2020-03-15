@@ -31,10 +31,10 @@ import {
   MultiOpenEndedAnswer,
   RankingMatrixAnswer,
   RatingMatrixAnswer
-} from "./answer";
-import {Validation} from "./validation";
-import {Heading} from "./heading";
-import {Id} from "../core";
+} from './answer';
+import {Validation} from './validation';
+import {Heading} from './heading';
+import {Id} from '../core';
 
 export interface QuestionListItem {
   id: Id;
@@ -61,7 +61,10 @@ export interface QuestionRequired {
 export type Question = SingleChoiceQuestion | MultipleChoiceQuestion | MatrixQuestion | OpenEndedQuestion | DemographicQuestion |
   DateTimeQuestion | PresentationQuestion;
 
+export type FamilyType = 'single_choice' | 'matrix' | 'open_ended' | 'demographic' | 'datetime' | 'multiple_choice' | 'presentation';
+
 export interface QuestionBase {
+  family: FamilyType;
   headings: Heading[];
   position: number;
   visible: boolean;
