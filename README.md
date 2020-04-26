@@ -3,7 +3,9 @@
 ## Usage
 
 ```ts
-const token = process.env[TOKEN_ENV_VAR_NAME]!;
+import {SurveymonkeyConfig, SurveymonkeyApi} from 'surveymonkey-typescript-sdk';
+
+const token: string = 'YOUR_SURVEYMONKEY_TOKEN';
 const config: SurveymonkeyConfig = {token};
 
 const api = new SurveymonkeyApi(config);
@@ -13,9 +15,10 @@ async function main(): Promise<void> {
   for (const survey of data) {
     console.log(survey);
   }
+  process.exit(0);
 }
 
-main().then(_ => process.exit(0));
+main();
 ```
 
 ## Endpoints coverage
