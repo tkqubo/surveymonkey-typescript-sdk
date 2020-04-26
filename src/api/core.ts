@@ -7,6 +7,7 @@ export const URL_BASE = 'https://api.surveymonkey.net/v3';
 
 export interface SurveymonkeyConfig {
   token: string;
+  trimText?: boolean;
 }
 
 export interface Links {
@@ -58,7 +59,34 @@ export abstract class ApiBase {
     const url = this.requestUrl(...segments);
     // console.debug(`request: ${url}`);
     const response = await request(url, this.requestOptions()).promise();
-    return JSON.parse(response);
+    const json = JSON.parse(response)
+    if (this.trimText) {
+      return ApiBase.trimJson(json);
+    } else {
+      return json;
+    }
+  }
+
+  private get trimText() {
+    return this.config.trimText !== false;
+  }
+
+  private static trimJson(value: unknown): any {
+    if (value === null || value === undefined) {
+      return value;
+    } else if (typeof value === 'string') {
+      return value.trim();
+    } else if (value instanceof Array) {
+      return value.map(ApiBase.trimJson);
+    } else if (value instanceof Object) {
+      const obj: { [key: string]: any } = {};
+      for (const name in value) {
+        obj[name] = ApiBase.trimJson((value as any)[name]);
+      }
+      return obj;
+    } else {
+      return value;
+    }
   }
 }
 
