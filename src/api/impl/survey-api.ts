@@ -34,7 +34,7 @@ export class SurveyApi extends ApiBase {
    * Public App users need access to the View Surveys scope
    */
   getSurveyList(): Promise<GetSurveyListResponse> {
-    return this.doRequest();
+    return this.doRequest([]);
   }
 
   /**
@@ -43,7 +43,7 @@ export class SurveyApi extends ApiBase {
    * @param id
    */
   getSurvey(id: Id): Promise<Survey> {
-    return this.doRequest(id);
+    return this.doRequest([id]);
   }
 
   /**
@@ -52,7 +52,7 @@ export class SurveyApi extends ApiBase {
    * @param id
    */
   getSurveyDetails(id: Id): Promise<SurveyDetail> {
-    return this.doRequest(id, 'details');
+    return this.doRequest([id, 'details']);
   }
 
   // TODO: query parameter
@@ -61,7 +61,7 @@ export class SurveyApi extends ApiBase {
    * Public App users need access to the View Library Assets scope
    */
   getSurveyCategoryList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase('survey_categories');
+    return this.doRequestWithoutPathBase(['survey_categories']);
   }
 
   // TODO: query parameter
@@ -70,12 +70,12 @@ export class SurveyApi extends ApiBase {
    * Public App users need access to the View Library Assets scope
    */
   getSurveyTemplateList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase('survey_templates');
+    return this.doRequestWithoutPathBase(['survey_templates']);
   }
 
   // TODO: query parameter
   /** Returns a list of survey languages that can be used to generate translations for multilingual surveys */
   getSurveyLanguageList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase('survey_languages');
+    return this.doRequestWithoutPathBase(['survey_languages']);
   }
 }

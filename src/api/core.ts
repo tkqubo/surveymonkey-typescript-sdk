@@ -41,24 +41,24 @@ export abstract class ApiBase {
     };
   }
 
-  protected requestUrl(...segments: SegmentType[]): string {
+  protected requestUrl(segments: SegmentType[]): string {
     const compactSegment = segments?.filter(isEmpty)
     const urlSegment = compactSegment?.length > 0 ? `/${compactSegment.join('/')}` : '';
     return `${this.urlBase}${urlSegment}`;
   }
 
   protected requestOptions(additional: RequestPromiseOptions = {}): RequestPromiseOptions {
-    return {method: 'GET', headers: this.headers, ...additional};
+    return {method: 'GET', headers: this.headers, ...additional,};
   }
 
-  protected async doRequest<T>(...segments: SegmentType[]): Promise<T> {
-    return this.doRequestWithoutPathBase(this.pathBase, ...segments);
+  protected async doRequest<T>(segments: SegmentType[], params?: any): Promise<T> {
+    return this.doRequestWithoutPathBase([this.pathBase, ...segments], params);
   }
 
-  protected async doRequestWithoutPathBase<T>(...segments: SegmentType[]): Promise<T> {
-    const url = this.requestUrl(...segments);
+  protected async doRequestWithoutPathBase<T>(segments: SegmentType[], params?: any): Promise<T> {
+    const url = this.requestUrl(segments);
     // console.debug(`request: ${url}`);
-    const response = await request(url, this.requestOptions()).promise();
+    const response = await request(url, this.requestOptions({qs: params})).promise();
     const json = JSON.parse(response)
     if (this.trimText) {
       return ApiBase.trimJson(json);
