@@ -1,14 +1,15 @@
 'use strict';
 
 import {
+  ApiResponse,
   Id,
-  SurveyPageListItem,
   QuestionListItem,
   Survey,
   SurveyCategory,
   SurveyDetail,
   SurveyLanguage,
   SurveyListItem,
+  SurveyPageListItem,
   SurveyTemplate
 } from '../../model';
 import {ApiBase, PaginatedResponse} from '../core';
@@ -33,8 +34,8 @@ export class SurveyApi extends ApiBase {
    * Returns a list of surveys owned or shared with the authenticated user.
    * Public App users need access to the View Surveys scope
    */
-  getSurveyList(): Promise<GetSurveyListResponse> {
-    return this.doRequest([]);
+  getSurveyList(): Promise<ApiResponse<GetSurveyListResponse>> {
+    return this.doGet([]);
   }
 
   /**
@@ -42,8 +43,8 @@ export class SurveyApi extends ApiBase {
    * To get an expanded version showing all pages and questions use /surveys/{survey_id}/details. Requires View Surveys scope
    * @param id
    */
-  getSurvey(id: Id): Promise<Survey> {
-    return this.doRequest([id]);
+  getSurvey(id: Id): Promise<ApiResponse<Survey>> {
+    return this.doGet([id]);
   }
 
   /**
@@ -51,8 +52,8 @@ export class SurveyApi extends ApiBase {
    * each containing a list of questions objects. Public App users need access to the View Surveys scope
    * @param id
    */
-  getSurveyDetails(id: Id): Promise<SurveyDetail> {
-    return this.doRequest([id, 'details']);
+  getSurveyDetails(id: Id): Promise<ApiResponse<SurveyDetail>> {
+    return this.doGet([id, 'details']);
   }
 
   // TODO: query parameter
@@ -60,8 +61,8 @@ export class SurveyApi extends ApiBase {
    * Returns a list of survey categories that can be used to filter survey templates.
    * Public App users need access to the View Library Assets scope
    */
-  getSurveyCategoryList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase(['survey_categories']);
+  getSurveyCategoryList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+    return this.doGetWithoutPathBase(['survey_categories']);
   }
 
   // TODO: query parameter
@@ -69,13 +70,13 @@ export class SurveyApi extends ApiBase {
    * Returns a list of survey templates. Survey template ids can be used as an argument to POST a new survey.
    * Public App users need access to the View Library Assets scope
    */
-  getSurveyTemplateList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase(['survey_templates']);
+  getSurveyTemplateList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+    return this.doGetWithoutPathBase(['survey_templates']);
   }
 
   // TODO: query parameter
   /** Returns a list of survey languages that can be used to generate translations for multilingual surveys */
-  getSurveyLanguageList(): Promise<GetSurveyCategoryListResponse> {
-    return this.doRequestWithoutPathBase(['survey_languages']);
+  getSurveyLanguageList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+    return this.doGetWithoutPathBase(['survey_languages']);
   }
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 import {ApiBase, PaginatedResponse} from '../core';
-import {Id, Response, ResponseDetail, ResponseListItem} from '../../model';
+import {ApiResponse, Id, Response, ResponseDetail, ResponseListItem} from '../../model';
 
 export type GetResponseListResponse = PaginatedResponse<ResponseListItem>;
 
@@ -92,19 +92,19 @@ export interface GetResponseBulkListQueryParameter {
 }
 
 export class ResponseApi extends ApiBase {
-  getResponseList(surveyId: Id, params?: GetResponseListQueryParameter): Promise<GetResponseListResponse> {
-    return this.doRequestWithoutPathBase(['surveys', surveyId, 'responses'], params);
+  getResponseList(surveyId: Id, params?: GetResponseListQueryParameter): Promise<ApiResponse<GetResponseListResponse>> {
+    return this.doGetWithoutPathBase(['surveys', surveyId, 'responses'], params);
   }
 
-  getResponseBulkList(surveyId: Id, params?: GetResponseBulkListQueryParameter): Promise<GetResponseBulkListResponse> {
-    return this.doRequestWithoutPathBase(['surveys', surveyId, 'responses', 'bulk'], params);
+  getResponseBulkList(surveyId: Id, params?: GetResponseBulkListQueryParameter): Promise<ApiResponse<GetResponseBulkListResponse>> {
+    return this.doGetWithoutPathBase(['surveys', surveyId, 'responses', 'bulk'], params);
   }
 
-  getResponse(surveyId: Id, responseId: Id): Promise<Response> {
-    return this.doRequestWithoutPathBase(['surveys', surveyId, 'responses', responseId]);
+  getResponse(surveyId: Id, responseId: Id): Promise<ApiResponse<Response>> {
+    return this.doGetWithoutPathBase(['surveys', surveyId, 'responses', responseId]);
   }
 
-  getResponseDetail(surveyId: Id, responseId: Id): Promise<ResponseDetail> {
-    return this.doRequestWithoutPathBase(['surveys', surveyId, 'responses', responseId, 'details']);
+  getResponseDetail(surveyId: Id, responseId: Id): Promise<ApiResponse<ResponseDetail>> {
+    return this.doGetWithoutPathBase(['surveys', surveyId, 'responses', responseId, 'details']);
   }
 }
