@@ -3,16 +3,19 @@
 import {
   ApiResponse,
   Id,
+  Paging,
+  Question,
   QuestionListItem,
   Survey,
   SurveyCategory,
   SurveyDetail,
   SurveyLanguage,
   SurveyListItem,
+  SurveyPage,
   SurveyPageListItem,
   SurveyTemplate
 } from '../../model';
-import {ApiBase, PaginatedResponse} from '../core';
+import {ApiBase, HttpMethod, PaginatedResponse} from '../core';
 
 export type GetSurveyListResponse = PaginatedResponse<SurveyListItem>;
 
@@ -24,7 +27,7 @@ export type GetSurveyLanguageListResponse = PaginatedResponse<SurveyLanguage>;
 
 export type GetSurveyPageListResponse = PaginatedResponse<SurveyPageListItem>;
 
-export type GetSuveyQuestionListResponse = PaginatedResponse<QuestionListItem>;
+export type GetSurveyQuestionListResponse = PaginatedResponse<QuestionListItem>;
 
 export class SurveyApi extends ApiBase {
   protected pathBase = 'surveys';
@@ -35,7 +38,7 @@ export class SurveyApi extends ApiBase {
    * Public App users need access to the View Surveys scope
    */
   getSurveyList(): Promise<ApiResponse<GetSurveyListResponse>> {
-    return this.doGet([]);
+    return this.doGet();
   }
 
   /**
@@ -54,6 +57,43 @@ export class SurveyApi extends ApiBase {
    */
   getSurveyDetails(id: Id): Promise<ApiResponse<SurveyDetail>> {
     return this.doGet([id, 'details']);
+  }
+
+  /**
+   * Returns a page’s details. Public App users need access to the View Surveys scope
+   * @param id
+   */
+  getSurveyPages(id: Id): Promise<ApiResponse<GetSurveyPageListResponse>> {
+    return this.doGet([id, 'pages']);
+  }
+
+  /**
+   * Returns a page’s details. Public App users need access to the View Surveys scope
+   * @param id
+   * @param pageId
+   */
+  getSurveyPage(id: Id, pageId: Id): Promise<ApiResponse<SurveyPage>> {
+    return this.doGet([id, 'pages', pageId]);
+  }
+
+  /**
+   * Returns a list of questions on a survey page. Public App users need access to the View Surveys scope
+   * @param id
+   * @param pageId
+   * @param paging
+   */
+  getPageQuestions(id: Id, pageId: Id, paging?: Paging): Promise<ApiResponse<GetSurveyQuestionListResponse>> {
+    return this.doGet([id, 'pages', pageId, 'questions'], paging);
+  }
+
+  /**
+   * Returns a question. Requires View Surveys scope
+   * @param id
+   * @param pageId
+   * @param questionId
+   */
+  getPageQuestion(id: Id, pageId: Id, questionId: Id): Promise<ApiResponse<Question>> {
+    return this.doGet([id, 'pages', pageId, 'questions', questionId]);
   }
 
   // TODO: query parameter
@@ -78,5 +118,65 @@ export class SurveyApi extends ApiBase {
   /** Returns a list of survey languages that can be used to generate translations for multilingual surveys */
   getSurveyLanguageList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
     return this.doGetWithoutPathBase(['survey_languages']);
+  }
+
+  /** Checks if resource is available */
+  headSurveyList() {
+    return this.doHead();
+  }
+
+  /** Checks if resource is available */
+  headSurvey(id: Id): Promise<boolean> {
+    return this.doHead([id]);
+  }
+
+  /** Checks if resource is available */
+  headSurveyCategoryList(): Promise<boolean> {
+    return this.doHeadWithoutPathBase(['survey_categories']);
+  }
+
+  /** Checks if resource is available */
+  headSurveyTemplateList(): Promise<boolean> {
+    return this.doHeadWithoutPathBase(['survey_templates']);
+  }
+
+  /** Checks if resource is available */
+  headSurveyLanguageList(): Promise<boolean> {
+    return this.doHeadWithoutPathBase(['survey_languages']);
+  }
+
+  /** Checks if resource is available */
+  headSurveyPageList(id: Id): Promise<boolean> {
+    return this.doHead([id, 'pages']);
+  }
+
+  /** Checks if resource is available */
+  headSurveyPage(id: Id, pageId: Id): Promise<boolean> {
+    return this.doHead([id, 'pages', pageId]);
+  }
+
+  /** Checks if resource is available */
+  headPageQuestionList(id: Id, pageId: Id): Promise<boolean> {
+    return this.doHead([id, 'pages', pageId, 'questions']);
+  }
+
+  /** Checks if resource is available */
+  headPageQuestion(id: Id, pageId: Id, questionId: Id): Promise<boolean> {
+    return this.doHead([id, 'pages', pageId, 'questions', questionId]);
+  }
+
+  /** Returns available methods and options */
+  optionsSurvey(id: Id): Promise<HttpMethod[]> {
+    return this.doOptions([id]);
+  }
+
+  /** Returns available methods and options */
+  optionsSurveyPage(id: Id, pageId: Id): Promise<any> {
+    return this.doOptions([id, 'pages', pageId]);
+  }
+
+  /** Returns available methods and options */
+  optionsPageQuestion(id: Id, pageId: Id, questionId: Id): Promise<any> {
+    return this.doOptions([id, 'pages', pageId, 'questions', questionId]);
   }
 }

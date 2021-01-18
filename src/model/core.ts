@@ -23,3 +23,8 @@ export interface TimeUnitRateLimitMetadata {
 export function toInt(value: string): number | undefined {
   try { return parseInt(value);} catch (e) {return undefined;}
 }
+
+export interface Paging {
+  page?: number;
+  per_page?: number;
+}

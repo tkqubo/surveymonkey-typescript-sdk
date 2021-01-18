@@ -29,7 +29,7 @@ export interface PaginatedResponse<T> {
 
 export type SegmentType = string | number;
 
-export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD';
 
 export abstract class ApiBase {
   protected urlBase: string = URL_BASE;
@@ -50,14 +50,40 @@ export abstract class ApiBase {
     return `${this.urlBase}${urlSegment}`;
   }
 
-  protected async doGet<T>(segments: SegmentType[], params?: any): Promise<ApiResponse<T>> {
+  protected async doGet<T>(segments: SegmentType[] = [], params?: any): Promise<ApiResponse<T>> {
     return this.doGetWithoutPathBase([this.pathBase, ...segments], params);
   }
 
   protected async doGetWithoutPathBase<T>(segments: SegmentType[], params?: any): Promise<ApiResponse<T>> {
-    const url = this.requestUrl(segments);
-    const requestOption = this.requestOption('GET', url, {qs: params});
+    return this.doRequestWithoutPathBase('GET', segments, params);
+  }
 
+  protected async doHead<T>(segments: SegmentType[] = [], params?: any): Promise<boolean> {
+    return this.doHeadWithoutPathBase([this.pathBase, ...segments], params);
+  }
+
+  protected async doHeadWithoutPathBase(segments: SegmentType[], params?: any): Promise<boolean> {
+    const url = this.requestUrl(segments);
+    const requestOption = this.requestOption('HEAD', url, {qs: params});
+    const {statusCode} = await requestPromise(requestOption);
+    return 200 <= statusCode && statusCode < 400;
+  }
+
+  protected async doOptions(segments: SegmentType[] = [], params?: any): Promise<HttpMethod[]> {
+    return this.doOptionsWithoutPathBase([this.pathBase, ...segments], params);
+  }
+
+  protected async doOptionsWithoutPathBase(segments: SegmentType[], params?: any): Promise<HttpMethod[]> {
+    const url = this.requestUrl(segments);
+    const requestOption = this.requestOption('OPTIONS', url, {qs: params});
+    const {headers} = await requestPromise(requestOption);
+    const rawMethods: string = headers['access-control-allow-methods']
+    return rawMethods.split(/, */g) as HttpMethod[];
+  }
+
+  private async doRequestWithoutPathBase(method: HttpMethod, segments: SegmentType[], params: any) {
+    const url = this.requestUrl(segments);
+    const requestOption = this.requestOption(method, url, {qs: params});
     const {statusCode, body: rawBody, headers} = await requestPromise(requestOption);
     const body = JSON.parse(rawBody);
     const rateLimit = toRateLimitMetadata(headers);
