@@ -1,11 +1,13 @@
 'use strict';
 
 import {
-  ApiResponse,
+  ApiResponse, HttpMethod,
   Id,
+  PaginatedApiResponse,
+  PaginatedBody,
   Paging,
   Question,
-  QuestionListItem,
+  QuestionListItem, SortOrder,
   Survey,
   SurveyCategory,
   SurveyDetail,
@@ -15,30 +17,46 @@ import {
   SurveyPageListItem,
   SurveyTemplate
 } from '../../model';
-import {ApiBase, HttpMethod, PaginatedResponse} from '../core';
+import {ApiBase} from '../core';
 
-export type GetSurveyListResponse = PaginatedResponse<SurveyListItem>;
+export namespace SurveyApi {
+  export namespace QueryParameter {
+    export type SortBy = 'title' | 'date_modified' | 'num_responses';
+    export type Include = 'shared_with' | 'shared_by' | 'owned' | 'response_count' | 'date_created' | 'date_modified' |
+      'language' | 'question_count' | 'analyze_url' | 'preview';
 
-export type GetSurveyCategoryListResponse = PaginatedResponse<SurveyCategory>;
-
-export type GetSurveyTemplateListResponse = PaginatedResponse<SurveyTemplate>;
-
-export type GetSurveyLanguageListResponse = PaginatedResponse<SurveyLanguage>;
-
-export type GetSurveyPageListResponse = PaginatedResponse<SurveyPageListItem>;
-
-export type GetSurveyQuestionListResponse = PaginatedResponse<QuestionListItem>;
+    export interface GetSurveyList {
+      /** Which page of resources to return. Defaults to 1	 */
+      page?: number,
+      /** Number of resources to return per page	 */
+      per_page?: number,
+      /** Field used to sort returned survey list: title, date_modified, or num_responses	String- */
+      sort_by?: SortBy,
+      /** Sort order: ASC or DESC	String- */
+      sort_order?: SortOrder,
+      /** Use to filter survey list: shared_with, shared_by, or owned (useful for teams) or use to specify additional fields to return per survey: response_count, date_created, date_modified, language, question_count, analyze_url, preview	Comma Separated String- */
+      include?: Include,
+      /** Search survey list by survey title	 */
+      title?: string,
+      /** Surveys must be last modified after this date.	Date string in format YYYY-MM-DDTHH:MM:SS (no offset) */
+      start_modified_at?: string,
+      /** Surveys must be last modified before this date.	Date string in format YYYY-MM-DDTHH:MM:SS (no offset) */
+      end_modified_at?: string,
+      /** Specify the id of a folder to only return surveys in it.	 */
+      folder_id?: string,
+    }
+  }
+}
 
 export class SurveyApi extends ApiBase {
   protected pathBase = 'surveys';
 
-  // TODO: query parameter
   /**
    * Returns a list of surveys owned or shared with the authenticated user.
    * Public App users need access to the View Surveys scope
    */
-  getSurveyList(): Promise<ApiResponse<GetSurveyListResponse>> {
-    return this.doGet();
+  getSurveyList(params?: SurveyApi.QueryParameter.GetSurveyList): Promise<PaginatedApiResponse<SurveyListItem>> {
+    return this.doGet([], params);
   }
 
   /**
@@ -63,7 +81,7 @@ export class SurveyApi extends ApiBase {
    * Returns a page’s details. Public App users need access to the View Surveys scope
    * @param id
    */
-  getSurveyPages(id: Id): Promise<ApiResponse<GetSurveyPageListResponse>> {
+  getSurveyPages(id: Id): Promise<PaginatedApiResponse<SurveyPageListItem>> {
     return this.doGet([id, 'pages']);
   }
 
@@ -82,7 +100,7 @@ export class SurveyApi extends ApiBase {
    * @param pageId
    * @param paging
    */
-  getPageQuestions(id: Id, pageId: Id, paging?: Paging): Promise<ApiResponse<GetSurveyQuestionListResponse>> {
+  getPageQuestions(id: Id, pageId: Id, paging?: Paging): Promise<PaginatedApiResponse<QuestionListItem>> {
     return this.doGet([id, 'pages', pageId, 'questions'], paging);
   }
 
@@ -101,7 +119,7 @@ export class SurveyApi extends ApiBase {
    * Returns a list of survey categories that can be used to filter survey templates.
    * Public App users need access to the View Library Assets scope
    */
-  getSurveyCategoryList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+  getSurveyCategoryList(): Promise<PaginatedApiResponse<SurveyCategory>> {
     return this.doGetWithoutPathBase(['survey_categories']);
   }
 
@@ -110,13 +128,13 @@ export class SurveyApi extends ApiBase {
    * Returns a list of survey templates. Survey template ids can be used as an argument to POST a new survey.
    * Public App users need access to the View Library Assets scope
    */
-  getSurveyTemplateList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+  getSurveyTemplateList(): Promise<PaginatedApiResponse<SurveyTemplate>> {
     return this.doGetWithoutPathBase(['survey_templates']);
   }
 
   // TODO: query parameter
   /** Returns a list of survey languages that can be used to generate translations for multilingual surveys */
-  getSurveyLanguageList(): Promise<ApiResponse<GetSurveyCategoryListResponse>> {
+  getSurveyLanguageList(): Promise<PaginatedApiResponse<SurveyLanguage>> {
     return this.doGetWithoutPathBase(['survey_languages']);
   }
 

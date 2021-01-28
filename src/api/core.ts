@@ -1,7 +1,7 @@
 'use strict';
 
 import request, {CoreOptions, Headers} from 'request';
-import {ApiResponse, RateLimitMetadata, TimeUnitRateLimitMetadata, toInt} from '../model';
+import {ApiResponse, HttpMethod, RateLimitMetadata, TimeUnitRateLimitMetadata, toInt} from '../model';
 import {isEmpty, trimJson} from '../utils';
 
 export const URL_BASE = 'https://api.surveymonkey.net/v3';
@@ -11,25 +11,7 @@ export interface SurveymonkeyConfig {
   trimText?: boolean;
 }
 
-export interface Links {
-  self: string;
-  prev?: string;
-  next?: string;
-  first?: string;
-  last?: string;
-}
-
-export interface PaginatedResponse<T> {
-  data: T[];
-  per_page: number;
-  page: number;
-  total: number;
-  links: Links;
-}
-
 export type SegmentType = string | number;
-
-export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD';
 
 export abstract class ApiBase {
   protected urlBase: string = URL_BASE;
@@ -129,4 +111,3 @@ function toTimeUnitRateLimitMetadata(header: request.Headers, unit: 'minute' | '
     reset: toInt(header[`x-ratelimit-app-global-${unit}-reset`]),
   };
 }
-

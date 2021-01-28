@@ -1,7 +1,7 @@
 'use strict';
 
-import {Id} from '../core';
 import {SurveyPageDetail} from './page';
+import {Id} from '../api-response';
 
 export interface ButtonsText {
   next_button: string;

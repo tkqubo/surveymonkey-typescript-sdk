@@ -1,6 +1,6 @@
 'use strict';
 
-import {Id} from './core';
+import {Id} from './api-response';
 
 export interface ResponseListItem {
   id: Id;

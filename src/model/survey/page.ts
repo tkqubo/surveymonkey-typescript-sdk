@@ -1,7 +1,7 @@
 'use strict';
 
-import {Id} from '../core';
 import {Question} from './question';
+import {Id} from '../api-response';
 
 export interface SurveyPageListItem {
   id: Id;
