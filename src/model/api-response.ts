@@ -35,10 +35,5 @@ export interface Links {
   last?: string;
 }
 
-export interface Paging {
-  page?: number;
-  per_page?: number;
-}
-
 /** NOTE: Surveymonkey documentation says IDs are integer, but the actual endpoints returns string instead */
 export type Id = string;

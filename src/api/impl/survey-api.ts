@@ -1,13 +1,13 @@
 'use strict';
 
 import {
-  ApiResponse, HttpMethod,
+  ApiResponse,
+  HttpMethod,
   Id,
   PaginatedApiResponse,
-  PaginatedBody,
-  Paging,
   Question,
-  QuestionListItem, SortOrder,
+  QuestionListItem,
+  SortOrder,
   Survey,
   SurveyCategory,
   SurveyDetail,
@@ -17,7 +17,8 @@ import {
   SurveyPageListItem,
   SurveyTemplate
 } from '../../model';
-import {ApiBase} from '../core';
+import { ApiBase } from '../core';
+import { Pagination } from '../../model/api-request';
 
 export namespace SurveyApi {
   export namespace QueryParameter {
@@ -25,11 +26,7 @@ export namespace SurveyApi {
     export type Include = 'shared_with' | 'shared_by' | 'owned' | 'response_count' | 'date_created' | 'date_modified' |
       'language' | 'question_count' | 'analyze_url' | 'preview';
 
-    export interface GetSurveyList {
-      /** Which page of resources to return. Defaults to 1	 */
-      page?: number,
-      /** Number of resources to return per page	 */
-      per_page?: number,
+    export interface GetSurveyList extends Pagination {
       /** Field used to sort returned survey list: title, date_modified, or num_responses	String- */
       sort_by?: SortBy,
       /** Sort order: ASC or DESC	String- */
@@ -80,9 +77,10 @@ export class SurveyApi extends ApiBase {
   /**
    * Returns a page’s details. Public App users need access to the View Surveys scope
    * @param id
+   * @param params
    */
-  getSurveyPages(id: Id): Promise<PaginatedApiResponse<SurveyPageListItem>> {
-    return this.doGet([id, 'pages']);
+  getSurveyPages(id: Id, params?: Pagination): Promise<PaginatedApiResponse<SurveyPageListItem>> {
+    return this.doGet([id, 'pages'], params);
   }
 
   /**
@@ -98,10 +96,10 @@ export class SurveyApi extends ApiBase {
    * Returns a list of questions on a survey page. Public App users need access to the View Surveys scope
    * @param id
    * @param pageId
-   * @param paging
+   * @param params
    */
-  getPageQuestions(id: Id, pageId: Id, paging?: Paging): Promise<PaginatedApiResponse<QuestionListItem>> {
-    return this.doGet([id, 'pages', pageId, 'questions'], paging);
+  getPageQuestions(id: Id, pageId: Id, params?: Pagination): Promise<PaginatedApiResponse<QuestionListItem>> {
+    return this.doGet([id, 'pages', pageId, 'questions'], params);
   }
 
   /**
