@@ -28,8 +28,35 @@ export function isEmpty(type: string | number): boolean {
   }
 }
 
+export const logLevels: string[] = [
+  'alert',
+  'crit',
+  'debug',
+  'debug',
+  'emerg',
+  'error',
+  'error',
+  'http',
+  'info',
+  'info',
+  'notice',
+  'silly',
+  'verbose',
+  'warn',
+  'warning',
+]
+
+function getLogLevel() {
+  const rawLevel = process.env['LOG_LEVEL']?.toLowerCase();
+  if (rawLevel && logLevels.includes(rawLevel)) {
+    return rawLevel;
+  } else {
+    return 'info';
+  }
+}
+
 export const logger: winston.Logger = winston.createLogger({
-  level: 'info',
+  level: getLogLevel(),
   format: winston.format.combine(
     winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
     winston.format.cli(),
