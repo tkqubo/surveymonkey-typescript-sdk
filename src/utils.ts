@@ -1,5 +1,7 @@
 'use strict';
 
+import * as winston from 'winston';
+
 export function trimJson(value: unknown): any {
   if (value === null || value === undefined) {
     return value;
@@ -26,3 +28,12 @@ export function isEmpty(type: string | number): boolean {
   }
 }
 
+export const logger: winston.Logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
+    winston.format.cli(),
+    winston.format.printf(info => `[${info.timestamp}] ${info.level}${info.message}`)
+  ),
+  transports: new winston.transports.Console(),
+});

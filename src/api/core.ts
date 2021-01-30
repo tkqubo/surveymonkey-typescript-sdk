@@ -2,7 +2,7 @@
 
 import request, {CoreOptions, Headers} from 'request';
 import {ApiResponse, HttpMethod, RateLimitMetadata, TimeUnitRateLimitMetadata, toInt} from '../model';
-import {isEmpty, trimJson} from '../utils';
+import { isEmpty, logger, trimJson } from '../utils';
 
 export const URL_BASE = 'https://api.surveymonkey.net/v3';
 
@@ -69,6 +69,7 @@ export abstract class ApiBase {
     const {statusCode, body: rawBody, headers} = await requestPromise(requestOption);
     const body = JSON.parse(rawBody);
     const rateLimit = toRateLimitMetadata(headers);
+    logger.debug(`${method} ${url} - statusCode=${statusCode}, limit.minute=${rateLimit.minute.remaining}, limit.day=${rateLimit.day.remaining}`)
     if (this.trimText) {
       return {statusCode, rateLimit, body: trimJson(body)};
     } else {
