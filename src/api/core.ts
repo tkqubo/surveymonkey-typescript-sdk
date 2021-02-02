@@ -63,17 +63,18 @@ export abstract class ApiBase {
     return rawMethods.split(/, */g) as HttpMethod[];
   }
 
-  private async doRequestWithoutPathBase(method: HttpMethod, segments: SegmentType[], params: any) {
+  private async doRequestWithoutPathBase(method: HttpMethod, segments: SegmentType[], params: any): Promise<ApiResponse<any>> {
     const url = this.requestUrl(segments);
     const requestOption = this.requestOption(method, url, {qs: params});
     const {statusCode, body: rawBody, headers} = await requestPromise(requestOption);
     const body = JSON.parse(rawBody);
     const rateLimit = toRateLimitMetadata(headers);
     logger.debug(`${method} ${url} - statusCode=${statusCode}, limit.minute=${rateLimit.minute.remaining}, limit.day=${rateLimit.day.remaining}`)
-    if (this.trimText) {
-      return {statusCode, rateLimit, body: trimJson(body)};
+    const response: ApiResponse<any> = this.trimText ? {statusCode, rateLimit, body: trimJson(body)} :{statusCode, rateLimit, body};
+    if (statusCode < 400) {
+      return response;
     } else {
-      return {statusCode, rateLimit, body};
+      throw new Error(`Request failed with ${statusCode} error: ${JSON.stringify(response)}`);
     }
   }
 
